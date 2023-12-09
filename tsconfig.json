@@ -8,7 +8,10 @@
     "outDir": "./dist",
     "strict": true,
     "jsx": "react-jsx",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+        "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+      }
 },
 "include": [
     "./**/*"
