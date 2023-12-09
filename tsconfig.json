@@ -1,6 +1,22 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "strict": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "paths": {
+        "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
+      }
+},
+"include": [
+    "./**/*"
+],
+"exclude": [
+    "node_modules"
+]
 }

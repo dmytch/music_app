@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {FC, useState, useEffect} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './src/screens/Login';
+import { User, onAuthStateChanged } from 'firebase/auth';
+import { FIREBASE_AUTH } from './FirebaseConfig';
+import MainMenu from './src/screens/MainMenu';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+const InsideStack = createNativeStackNavigator();
+
+function InsideLayout() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    <InsideStack.Navigator>
+      <InsideStack.Screen name='MainMenu' component={MainMenu}/>
+    </InsideStack.Navigator>
+  )
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App: FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user)
+    });
+  }, [])
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='Login'>
+        {user ? (<Stack.Screen name='InsideLayout' component={InsideLayout} options={{headerShown:false}}/>)
+        : (
+            <Stack.Screen name='Login' component={Login}/>
+          )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App
