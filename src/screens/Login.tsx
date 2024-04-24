@@ -1,17 +1,16 @@
-import {FC, useState} from 'react';
+import {FC, useState, useCallback} from 'react';
 import { View, Text, TextInput, StyleSheet, ActivityIndicator, Button, KeyboardAvoidingView } from 'react-native'
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-const Login: FC = () => {
-
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
+const Login: FC = () => { 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const auth = FIREBASE_AUTH;
 
-    const [test, setTest] = useState<string>('nothing');
+    const [test, setTest] = useState('nothing');
 
     const signIn = async () => {
         setLoading (true);
@@ -40,7 +39,7 @@ const Login: FC = () => {
             setLoading(false)
         }
     };
-        
+    
     return (
         <View style={styles.container}>
             <KeyboardAvoidingView behavior='padding'>
@@ -52,6 +51,7 @@ const Login: FC = () => {
                                 <Button title='Create account' onPress={signUp}/>
                             </>}
                         <Text>{test}</Text>
+                        <Text style={styles.test}>HELLO</Text>
             </KeyboardAvoidingView>
         </View>
     );
@@ -62,10 +62,18 @@ export default Login;
 const styles = StyleSheet.create({
     container:{
         padding: 5,
+        height:'100%',
+        backgroundColor:'red'
     },
     loginInput:{
         borderWidth: 2,
         borderStyle:'solid',
-        borderColor:'black'
+        borderColor:'black',
+        padding: 5,
+        fontFamily:"Lato_700Bold"
+    },
+    test:{
+        fontFamily:"Lato_900Black_Italic",
+        fontSize:40,
     }
 })

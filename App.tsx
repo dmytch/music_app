@@ -1,10 +1,17 @@
 import {FC, useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './src/screens/Login';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
+import { PaperProvider } from 'react-native-paper';
+
+import Login from './src/screens/Login';
 import MainMenu from './src/screens/MainMenu';
+
+import useFontFetch from './src/Hooks/useFontFetch';
+import * as SplashScreen from 'expo-splash-screen';
+
+SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
@@ -26,14 +33,29 @@ const App: FC = () => {
     });
   }, [])
 
+  const [fontsLoaded, fontError] = useFontFetch();
+
+  useEffect(()=>{
+    const fontFetch = async () => {
+      if (fontsLoaded || fontError) {
+        await SplashScreen.hideAsync();
+      }
+    };
+    fontFetch()
+  },[fontsLoaded, fontError])
+
+  if(!fontsLoaded && !fontError) return null
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        {user ? (<Stack.Screen name='InsideLayout' component={InsideLayout} options={{headerShown:false}}/>)
-        : (
-            <Stack.Screen name='Login' component={Login}/>
-          )}
-      </Stack.Navigator>
+      <PaperProvider>
+        <Stack.Navigator initialRouteName='Login'>
+          {user ? (<Stack.Screen name='InsideLayout' component={InsideLayout} options={{headerShown:false}}/>)
+          : (
+              <Stack.Screen name='Login' component={Login}/>
+            )}
+        </Stack.Navigator>
+      </PaperProvider>
     </NavigationContainer>
   );
 };
