@@ -6,7 +6,7 @@ const MainMenu: FC = () => {
 
     return (
         <View>
-            <Text>
+            <Text style={{fontFamily:"Lato_900Black"}}>
                 Main menu
             </Text>
             <Button title='Log out' onPress={()=>{FIREBASE_AUTH.signOut()}}/>
